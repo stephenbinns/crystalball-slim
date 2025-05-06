@@ -33,19 +33,14 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = "> 3"
 
-  spec.add_development_dependency "actionview"
-  spec.add_development_dependency "activerecord"
-  spec.add_development_dependency "factory_bot"
-  spec.add_development_dependency "i18n"
-  spec.add_development_dependency "parser"
-  spec.add_development_dependency "pry"
-  spec.add_development_dependency "pry-byebug"
+  spec.add_development_dependency "gc_ruboconfig"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rspec-github"
   spec.add_development_dependency "rubocop"
   spec.add_development_dependency "rubocop-rspec"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "sqlite3"
-  spec.add_development_dependency "yard"
+
   spec.metadata["rubygems_mfa_required"] = "true"
 end
