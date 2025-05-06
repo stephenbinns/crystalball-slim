@@ -64,7 +64,7 @@ describe Crystalball::MapStorage::YAMLStorage do
         specify do
           expect do
             subject
-          end.to raise_error("Can't load execution maps with different metadata. Metadata: [{:commit=>\"123\", :type=>\"Crystalball::ExecutionMap\"}, {:commit=>\"456\", :type=>\"Crystalball::ExecutionMap\"}]")
+          end.to raise_error("Can't load execution maps with different metadata. Metadata: [{commit: \"123\", type: \"Crystalball::ExecutionMap\"}, {commit: \"456\", type: \"Crystalball::ExecutionMap\"}]")
         end
       end
     end
