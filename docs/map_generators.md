@@ -76,58 +76,6 @@ Crystalball::MapGenerator.start! do |config|
 end
 ```
 
-### ParserStrategy
-
-The `ParserStrategy`, as the name suggests parses the files in order to detect which files are affected by an example.
-It works by first parsing all (`.rb`) files that match the given pattern under the configured root directory (defaults to current directory) to collect the constants definition paths.
-Then, when each example is executed, the used files of the current example group map are parsed to check for method calls to those constants. For that reason, `ParserStrategy` **only works when used with other strategies and is placed at the end of the strategies list**.
-
-To use it, add the `parser` gem to your `Gemfile` and:
-
-```ruby
-require 'crystalball/map_generator/parser_strategy'
-Crystalball::MapGenerator.start! do |config|
-  #...
-  config.register Crystalball::MapGenerator::ParserStrategy.new(pattern: /\A(app)|(lib)/)
-end
-```
-
-### ActionViewStrategy
-
-To use Rails specific strategies you must first `require 'crystalball/rails'`.
-This strategy patches `ActionView::Template#compile!` to map the examples to affected views. Use it as follows:
-
-```ruby
-Crystalball::MapGenerator.start! do |config|
-  #...
-  config.register Crystalball::MapGenerator::ActionViewStrategy.new
-end 
-```
-
-### I18nStrategy
-
-To use Rails specific strategies you must first `require 'crystalball/rails'`.
-Patches I18n to have access to the path where the locales are defined, so that those paths can be added to the example group map.
-To use it, add to your config:
-
-```ruby
-Crystalball::MapGenerator.start! do |config|
-  #...
-  config.register Crystalball::MapGenerator::I18nStrategy.new
-end
-```
-
-### FactoryBotStrategy
-
-Tracks which factories were used during the example and add files with corresponding definitions to the example group map.
-To use it, add to your config:
-```ruby
-Crystalball::MapGenerator.start! do |config|
-  #...
-  config.register Crystalball::MapGenerator::FactoryBotStrategy.new
-end
-```
-
 ### Custom strategies
 
 You can create your own strategy and use it with the map generator. Any object that responds to `#call(example_group_map, example)` (where `example_group_map` is a `Crystalball::ExampleGroupMap` and `example` a `RSpec::Core::Example`) and augmenting its list of used files using `example_group_map.push(*paths_to_files)`.
@@ -144,18 +92,3 @@ Crystalball::MapGenerator.start! do |config|
   config.compact_map = false
 end
 ``` 
-
-## TablesMapGenerator
-
-TablesMapGenerator is a separate map generator for Rails applications. It collects information about tables-to-models mapping and stores it in a file. The file is used by `Crystalball::Rails::Predictor::ModifiedSchema`.
-Use `Crystalball::Rails::TablesMapGenerator.start!` to start it.
-
-By default TablesMapGenerator will generate `tables_map.yml` file. You can customize this behavior by setting `map_storage_path` variable:
-```ruby
-Crystalball::TablesMapGenerator.start! do |config|
-  #...
-  config.map_storage_path = 'my_custom_tables_map_name.yml'
-end
-```
-
-
