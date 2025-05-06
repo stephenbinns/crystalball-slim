@@ -1,24 +1,26 @@
+inherit_from: .rubocop_todo.yml
+
 AllCops:
-  DisplayCopNames: true
-  TargetRubyVersion: 2.3
-Style/StringLiterals:
+  NewCops: enable
+  TargetRubyVersion: 3.2
+  Exclude:
+    - lib/generators/outbox/templates/*
+
+inherit_gem:
+  gc_ruboconfig: rubocop.yml
+
+inherit_mode:
+  merge:
+    - Exclude
+
+Gemspec/RequiredRubyVersion:
+  Enabled: False
+
+RSpec/ExampleLength:
   Enabled: false
-Metrics/LineLength:
-  Enabled: false
-Metrics/BlockLength:
-  Enabled: false
-Metrics/AbcSize:
-  Enabled: false
-Layout/SpaceBeforeBlockBraces:
-  EnforcedStyle: space
-  EnforcedStyleForEmptyBraces: space
-Layout/SpaceInsideHashLiteralBraces:
-  EnforcedStyle: no_space
-Naming/UncommunicativeMethodParamName:
-  Enabled: false
-Style/MethodMissingSuper:
-  Enabled: false
-Lint/AmbiguousBlockAssociation:
-  Enabled: false
-Style/DoubleNegation:
-  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 4
+
+RSpec/MultipleExpectations:
+  Max: 4

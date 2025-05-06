@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require 'git'
-require 'crystalball/source_diff'
+require "git"
 
 module Crystalball
   # Wrapper class representing Git repository
@@ -17,7 +16,7 @@ module Crystalball
 
       # Check if given path is under git control (contains .git folder)
       def exists?(path)
-        path.join('.git').directory?
+        path.join(".git").directory?
       end
     end
 
@@ -33,15 +32,6 @@ module Crystalball
 
     def respond_to_missing?(method, *)
       repo.respond_to?(method, false)
-    end
-
-    # Creates diff
-    #
-    # @param [String] from starting commit to build a diff. Default: HEAD
-    # @param [String] to ending commit to build a diff. Default: nil, will build diff of uncommitted changes
-    # @return [SourceDiff]
-    def diff(from = 'HEAD', to = nil)
-      SourceDiff.new(repo.diff(from, to))
     end
 
     private

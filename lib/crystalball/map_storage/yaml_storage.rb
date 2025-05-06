@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'yaml'
+require "yaml"
 
 module Crystalball
   class MapStorage
@@ -21,7 +21,8 @@ module Crystalball
 
           guard_metadata_consistency(meta)
 
-          Object.const_get(meta.first[:type]).new(metadata: meta.first, example_groups: example_groups.compact.inject(&:merge!))
+          Object.const_get(meta.first[:type]).new(metadata: meta.first,
+                                                  example_groups: example_groups.compact.inject(&:merge!))
         end
 
         private
@@ -33,7 +34,7 @@ module Crystalball
 
           paths.map do |file|
             metadata, *example_groups = file.read.split("---\n").reject(&:empty?).map do |yaml|
-              YAML.safe_load(yaml, [Symbol])
+              YAML.safe_load(yaml, permitted_classes: [Symbol])
             end
             example_groups = example_groups.inject(&:merge!)
 
@@ -62,7 +63,7 @@ module Crystalball
       # @param [Hash] data to write to storage file
       def dump(data)
         path.dirname.mkpath
-        path.open('a') { |f| f.write YAML.dump(data) }
+        path.open("a") { |f| f.write YAML.dump(data) }
       end
     end
   end
