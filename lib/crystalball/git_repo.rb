@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 require "git"
@@ -30,7 +31,7 @@ module Crystalball
       repo.public_send(method, *args, &block)
     end
 
-    def respond_to_missing?(method, *)
+    def respond_to_missing?(method, *_args)
       repo.respond_to?(method, false)
     end
 

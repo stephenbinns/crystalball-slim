@@ -1,11 +1,10 @@
+# typed: true
 # frozen_string_literal: true
 
 module Crystalball
   class MapGenerator
     # Manages map generation strategies
     class StrategiesCollection
-      include Enumerable
-
       def initialize(strategies = [])
         @strategies = strategies
       end
