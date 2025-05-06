@@ -1,6 +1,7 @@
 # typed: true
 # frozen_string_literal: true
 
+require "sorbet-runtime"
 require "crystalball/git_repo"
 require "crystalball/example_group_map"
 require "crystalball/execution_map"

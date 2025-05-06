@@ -39,8 +39,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-github"
   spec.add_development_dependency "rubocop"
   spec.add_development_dependency "rubocop-rspec"
+  spec.add_development_dependency "rubocop-sorbet"
   spec.add_development_dependency "simplecov"
+  spec.add_development_dependency "sorbet-static-and-runtime"
   spec.add_development_dependency "sqlite3"
+  spec.add_development_dependency "tapioca"
+  spec.add_development_dependency "yard"
 
   spec.metadata["rubygems_mfa_required"] = "true"
 end

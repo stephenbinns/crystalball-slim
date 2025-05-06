@@ -16,7 +16,7 @@ module Crystalball
       # @param [Crystalball::ExampleGroupMap] _example_map - object holding example metadata and used files
       # @param [RSpec::Core::Example] _example - a RSpec example
       def call(_example_map, _example)
-        raise NotImplementedError
+        Kernel.raise NotImplementedError
       end
     end
   end
