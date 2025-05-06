@@ -18,5 +18,4 @@ tables_map.yml
 
 .DS_Store
 /.idea
-.ruby-version
 .ruby-gemset
