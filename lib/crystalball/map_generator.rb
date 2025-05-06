@@ -6,6 +6,7 @@ module Crystalball
     extend Forwardable
 
     attr_reader :configuration
+
     delegate %i[map_storage strategies dump_threshold map_class] => :configuration
 
     class << self
@@ -27,7 +28,7 @@ module Crystalball
 
     def initialize
       @configuration = Configuration.new
-      @configuration.commit = repo.gcommit('HEAD') if repo
+      @configuration.commit = repo.gcommit("HEAD") if repo
       yield @configuration if block_given?
     end
 
@@ -35,7 +36,7 @@ module Crystalball
     def start!
       self.map = nil
       map_storage.clear!
-      map_storage.dump(map.metadata.to_h)
+      map_storage.dump(**map.metadata.to_h)
 
       strategies.reverse.each(&:after_start)
       self.started = true
@@ -60,7 +61,8 @@ module Crystalball
     end
 
     def map
-      @map ||= map_class.new(metadata: {commit: configuration.commit&.sha, timestamp: configuration.commit&.date&.to_i, version: configuration.version})
+      @map ||= map_class.new(metadata: { commit: configuration.commit&.sha, timestamp: configuration.commit&.date&.to_i,
+                                         version: configuration.version })
     end
 
     private
@@ -69,7 +71,7 @@ module Crystalball
     attr_accessor :started
 
     def repo
-      @repo = GitRepo.open('.') unless defined?(@repo)
+      @repo = GitRepo.open(".") unless defined?(@repo)
       @repo
     end
 
@@ -77,7 +79,7 @@ module Crystalball
       return if configuration.compact_map
       return unless dump_threshold.positive? && map.size >= dump_threshold
 
-      map_storage.dump(map.example_groups)
+      map_storage.dump(**map.example_groups)
       map.clear!
     end
   end
