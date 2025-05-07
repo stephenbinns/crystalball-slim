@@ -16,7 +16,7 @@ module Crystalball
           @constants_definition_paths = {}
         end
 
-        sig { returns(RSpec::Mocks::InstanceVerifyingDouble) }
+        sig { returns(TracePoint) }
         def start
           self.trace_point ||= TracePoint.new(:class) do |tp|
             mod = tp.self
@@ -29,7 +29,7 @@ module Crystalball
           end.tap(&:enable)
         end
 
-        sig { returns(T.untyped) }
+        sig { void }
         def stop
           trace_point&.disable
           self.trace_point = nil

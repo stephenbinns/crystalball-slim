@@ -23,7 +23,10 @@ module Crystalball
         example_group_map
       end
 
+      delegate :push, :reverse, :each, :empty?, :to_a, to: :_strategies
+
       def method_missing(method_name, *args, &block)
+        puts "!!!!! #{method_name}"
         _strategies.public_send(method_name, *args, &block) || super
       end
 
@@ -33,14 +36,18 @@ module Crystalball
 
       private
 
-      sig { returns(T::Array[T.untyped]) }
+      sig { returns(T::Array[BaseStrategy]) }
       def _strategies
         @strategies
       end
 
       sig do
-        params(example_group_map: T.any(T::Array[String], Crystalball::ExampleGroupMap), example: T.any(String, T.untyped), strats: T::Array[T.untyped],
-               block: Proc).returns(T.any(T::Array[String], T::Boolean))
+        params(
+          example_group_map: T.any(T::Array[String], Crystalball::ExampleGroupMap),
+          example: T.untyped,
+          strats: T::Array[T.untyped],
+          block: Proc,
+        ).void
       end
       def run_for_strategies(example_group_map, example, strats, &block)
         return yield(example_group_map) if strats.empty?
