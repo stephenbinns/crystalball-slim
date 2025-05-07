@@ -10,26 +10,35 @@ module Crystalball
 
     # YAML persistence adapter for execution map storage
     class YAMLStorage
+      extend T::Sig
       attr_reader :path
 
       class << self
+        extend T::Sig
         # Loads map from given path
         #
         # @param [String] path to map
         # @return [Crystalball::ExecutionMap]
+        sig { params(path: Pathname).returns(Crystalball::ExecutionMap) }
         def load(path)
           meta, example_groups = *read_files(path).transpose
 
-          guard_metadata_consistency(meta)
+          guard_metadata_consistency(T.must(meta))
 
-          Object.const_get(meta.first[:type]).new(metadata: meta.first,
-                                                  example_groups: example_groups.compact.inject(&:merge!))
+          metadata = T.must(T.must(meta).first)
+          type = metadata.fetch(:type)
+
+          Object.const_get(type).new(
+            metadata: metadata,
+            example_groups: T.must(example_groups).compact.inject(&:merge!),
+          )
         end
 
         private
 
+        sig { params(path: Pathname).returns(T::Array[T::Array[T::Hash[Symbol, T.untyped]]]) }
         def read_files(path)
-          paths = path.directory? ? path.each_child.select(&:file?) : [path]
+          paths = path.directory? ? path.children.select(&:file?) : [path]
 
           raise NoFilesFoundError, "No files or folder exists #{path}" unless paths.any?(&:exist?)
 
@@ -43,6 +52,7 @@ module Crystalball
           end
         end
 
+        sig { params(metadata: T::Array[T::Hash[T.untyped, T.untyped]]).returns(T.untyped) }
         def guard_metadata_consistency(metadata)
           uniq = metadata.uniq
           raise "Can't load execution maps with different metadata. Metadata: #{uniq}" if uniq.size > 1
@@ -50,11 +60,13 @@ module Crystalball
       end
 
       # @param [String] path to store execution map
+      sig { params(path: Pathname).void }
       def initialize(path)
         @path = path
       end
 
       # Removes storage file
+      sig { void }
       def clear!
         path.delete if path.exist?
       end
@@ -62,6 +74,7 @@ module Crystalball
       # Writes data to storage file
       #
       # @param [Hash] data to write to storage file
+      sig { params(data: T::Hash[String, String]).returns(T.untyped) }
       def dump(data)
         path.dirname.mkpath
         path.open("a") { |f| f.write YAML.dump(data) }
