@@ -9,10 +9,12 @@ module Crystalball
   class MapGenerator
     # Class for files paths affected object definition
     class ObjectSourcesDetector
+      extend T::Sig
       include ::Crystalball::MapGenerator::Helpers::PathFilter
 
       attr_reader :definition_tracer, :hierarchy_fetcher
 
+      sig { params(root_path: String, definition_tracer: DefinitionTracer, hierarchy_fetcher: HierarchyFetcher).void }
       def initialize(
         root_path:,
         definition_tracer: DefinitionTracer.new(root_path),
@@ -24,10 +26,12 @@ module Crystalball
         @hierarchy_fetcher = hierarchy_fetcher
       end
 
+      sig { void }
       def after_register
         definition_tracer.start
       end
 
+      sig { void }
       def before_finalize
         definition_tracer.stop
       end
@@ -37,6 +41,7 @@ module Crystalball
       #
       # @param[Array<String>] list of files affected before example execution
       # @return [Array<String>]
+      sig { params(objects: T::Array[T.untyped]).returns(T::Array[String]) }
       def detect(objects)
         modules = objects.map do |object|
           object.is_a?(Module) ? object : object.class
@@ -48,7 +53,7 @@ module Crystalball
           end
         end.compact.uniq
 
-        filter paths
+        filter(paths)
       end
     end
   end

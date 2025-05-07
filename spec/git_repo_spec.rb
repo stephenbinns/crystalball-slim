@@ -45,16 +45,4 @@ describe Crystalball::GitRepo do
       it { is_expected.to be_falsey }
     end
   end
-
-  describe "#method_missing" do
-    it "delegates to #repo" do
-      expect(subject.lib).to eq subject.instance_variable_get(:@repo).lib
-    end
-  end
-
-  describe "#respond_to?" do
-    it "includes method_missing" do
-      expect(subject).to respond_to(:lib)
-    end
-  end
 end

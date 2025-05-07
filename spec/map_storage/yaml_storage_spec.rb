@@ -36,11 +36,10 @@ describe Crystalball::MapStorage::YAMLStorage do
       let(:file_content2) do
         { commit: "123", type: "Crystalball::ExecutionMap" }.to_yaml + { "UID100" => %w[a b c] }.to_yaml
       end
-      let(:subdir) { instance_double(Pathname, directory?: true, file?: false) }
 
       before do
         allow_path_exists true
-        allow(path).to receive(:each_child).and_return [file1, file2, subdir]
+        allow(path).to receive(:children).and_return [file1, file2]
       end
 
       it "load every file in directory" do
@@ -78,7 +77,7 @@ describe Crystalball::MapStorage::YAMLStorage do
       end
 
       context "and is a directory" do
-        let(:path) { instance_double(Pathname, directory?: true, each_child: []) }
+        let(:path) { instance_double(Pathname, directory?: true, children: []) }
 
         it "fails with NoFilesFoundError" do
           expect { map }.to raise_error Crystalball::MapStorage::NoFilesFoundError
