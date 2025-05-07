@@ -3,7 +3,7 @@ GIT_WORKING_DIR=git ls-files --others --exclude-standard '*.rb'
 
 .PHONY: all
 
-pre-push: test rubocop
+pre-push: test rubocop sorbet
 
 .makegems: Gemfile.lock
 	bundle install
@@ -14,3 +14,6 @@ test: .makegems
 rubocop: .makegems
 	bundle exec rubocop --autocorrect
 
+sorbet: .makegems
+	bundle exec tapioca gems
+	bundle exec srb tc

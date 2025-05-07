@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 require "spec_helper"
@@ -6,7 +7,6 @@ describe Crystalball::MapGenerator do
   subject(:generator) { described_class.new }
 
   let(:storage) { instance_double(Crystalball::MapStorage::YAMLStorage, clear!: true, dump: true) }
-  let(:detector) { instance_double(Crystalball::ExecutionDetector) }
   let(:threshold) { 0 }
   let(:map_class) { configuration.map_class }
   let(:configuration) { generator.configuration }

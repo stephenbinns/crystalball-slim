@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 module Crystalball
@@ -16,7 +17,7 @@ module Crystalball
         def start
           self.trace_point ||= TracePoint.new(:class) do |tp|
             mod = tp.self
-            path = tp.path
+            path = T.let(tp.path, T.nilable(String))
 
             next unless path&.start_with?(root_path)
 

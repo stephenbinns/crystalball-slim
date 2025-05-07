@@ -1,0 +1,14 @@
+gem:
+  exclude:
+    - gc_ruboconfig
+    - rubocop
+    - rubocop-rspec
+    - rubocop-sorbet
+    - ruby-lsp
+    - ruby-lsp-rails
+    - prism
+    - spoom
+    - tapioca
+    - uri
+  doc: false
+  workers: 5

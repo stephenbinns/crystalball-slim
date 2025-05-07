@@ -1,13 +1,12 @@
+# typed: true
 # frozen_string_literal: true
 
 module Crystalball
   # Class to generate execution map during RSpec build execution
   class MapGenerator
-    extend Forwardable
-
     attr_reader :configuration
 
-    delegate %i[map_storage strategies dump_threshold map_class] => :configuration
+    delegate :map_storage, :strategies, :dump_threshold, :map_class, to: :configuration
 
     class << self
       # Registers Crystalball handlers to generate execution map during specs execution

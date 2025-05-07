@@ -1,11 +1,10 @@
+# typed: true
 # frozen_string_literal: true
 
 module Crystalball
   class MapGenerator
     # Manages map generation strategies
     class StrategiesCollection
-      include Enumerable
-
       def initialize(strategies = [])
         @strategies = strategies
       end
@@ -14,7 +13,7 @@ module Crystalball
       # @param [Crystalball::ExampleGroupMap] example_group_map - initial example group map
       # @return [Crystalball::ExampleGroupMap] example group map augmented by each strategy
       def run(example_group_map, example, &block)
-        run_for_strategies(example_group_map, example, *_strategies.reverse, &block)
+        run_for_strategies(example_group_map, example, _strategies.reverse, &block)
         example_group_map
       end
 
@@ -32,11 +31,11 @@ module Crystalball
         @strategies
       end
 
-      def run_for_strategies(example_group_map, example, *strats, &block)
+      def run_for_strategies(example_group_map, example, strats, &block)
         return yield(example_group_map) if strats.empty?
 
         strat = strats.shift
-        strat.call(example_group_map, example) { |c| run_for_strategies(c, example, *strats, &block) }
+        strat.call(example_group_map, example) { |c| run_for_strategies(c, example, strats, &block) }
       end
     end
   end

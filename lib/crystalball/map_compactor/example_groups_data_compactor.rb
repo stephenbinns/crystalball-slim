@@ -1,3 +1,4 @@
+# typed: true
 # frozen_string_literal: true
 
 require "crystalball/map_compactor/example_context"
@@ -30,7 +31,7 @@ module Crystalball
       end
 
       def compact_context!(context)
-        result = nil
+        result = T.let(nil, T.untyped)
         plain_data.each do |example_uid, used_files|
           next unless context.include?(example_uid)
 
@@ -53,7 +54,9 @@ module Crystalball
       def extract_contexts(example_uids)
         result = []
         example_uids.each do |example_uid|
-          context_numbers = /\[(.*)\]/.match(example_uid)[1].split(":")
+          matches = /\[(.*)\]/.match(example_uid)
+          context_numbers = T.must(T.must(matches)[1]&.split(":"))
+
           until context_numbers.empty?
             result << ExampleContext.new(context_numbers.join(":"))
             context_numbers.pop
