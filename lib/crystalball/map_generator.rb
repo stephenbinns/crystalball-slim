@@ -54,13 +54,13 @@ module Crystalball
     end
 
     # Finalizes strategies and saves map
-    sig { returns(T::Boolean) }
+    sig { void }
     def finalize!
-      return false unless started
+      return unless started
 
       strategies.each(&:before_finalize)
 
-      return false unless map.size.positive?
+      return unless map.size.positive?
 
       example_groups = (configuration.compact_map? ? MapCompactor.compact_map!(map) : map).example_groups
       map_storage.dump(example_groups)

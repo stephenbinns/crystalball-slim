@@ -26,13 +26,23 @@ module Crystalball
 
       # @param [Crystalball::ExampleGroupMap] example_map - object holding example metadata and used files
       # @param [RSpec::Core::Example] example - a RSpec example
-      sig { params(example_map: T::Array[T.untyped], example: T.untyped).returns(T.nilable(T::Array[T.untyped])) }
+      sig do
+        params(
+          example_map: T.any(T::Array[String], Crystalball::ExampleGroupMap),
+          example: T.untyped,
+        ).void
+      end
       def call(example_map, example)
         yield example_map, example
 
         described_class = example.metadata[:described_class]
 
-        example_map.concat(execution_detector.detect([described_class])) if described_class
+        if described_class
+          matched_examples = execution_detector.detect([described_class])
+          matched_examples.each do |e|
+            example_map.push(e)
+          end
+        end
       end
     end
   end

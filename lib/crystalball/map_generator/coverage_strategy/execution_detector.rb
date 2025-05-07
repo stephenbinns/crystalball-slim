@@ -16,7 +16,12 @@ module Crystalball
         # @param[Array<String>] list of files affected before example execution
         # @param[Array<String>] list of files affected after example execution
         # @return [Array<String>]
-        sig { params(before: T::Hash[String, T::Array[Integer]], after: T::Hash[String, T::Array[Integer]]).returns(T::Array[T.untyped]) }
+        sig do
+          params(
+            before: T::Hash[String, T::Array[T.nilable(Integer)]],
+            after: T::Hash[String, T::Array[T.nilable(Integer)]],
+          ).returns(T::Array[T.untyped])
+        end
         def detect(before, after)
           filter after.reject { |file_name, after_coverage| before[file_name] == after_coverage }.keys
         end
